@@ -1,0 +1,21 @@
+for key, value in pairs(vanilla_model) do
+    value.setEnabled(false)    
+end
+
+function skinModel()
+	
+	if player.getAnimation() == "CROUCHING" then
+		model.legs.setPos({0,-2,5})
+	else
+		model.legs.setPos({0,0,0})
+	end
+end
+
+function tick()
+	
+end
+
+function render(delta)
+	skinModel()
+	
+end
