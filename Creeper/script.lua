@@ -20,6 +20,7 @@ end
 
 function explode_dud()
 	sound.playSound('entity.generic.explode', player.getPos(), vectors.of{1, 0.75})
+	particle.addParticle('minecraft:explosion_emitter', player.getPos())
 end
 
 action_wheel.SLOT_1.setItem("minecraft:gunpowder")
@@ -30,7 +31,7 @@ explode_tick=0
 last_explode_tick=0
 is_exploding=false
 function lerp(a, b, t) return a+((b-a)*t) end
-function cubic(x, a, b) return ((x*(1/a))^3)*b+1 end
+function cubic(x, a, b) return ((x*(1/a))^3)*b end
 function explode()
 	is_exploding=true
 	sound.playSound('entity.creeper.primed', player.getPos(), vectors.of{1, 0.5})
@@ -42,13 +43,15 @@ function renderExplode(val)
 
 	local jitter=(val%2 >= 1) and 0.005 or 0
 	local flash=(val%6 >= 3)
+	local flash_intensity=math.ceil(math.min(15, cubic(x, 1.5, 1)*8+6))
+
 	if flash then
-		model.Player.setOverlay(vectors.of{15, 15})
+		model.Player.setOverlay(vectors.of{flash_intensity, 15})
 	else
 		model.Player.setOverlay(vectors.of{0, 15})
 	end
 
-	model.Player.setScale{cubic(x, 1.5, scale.x), cubic(x, 1.5, scale.y)+jitter, cubic(x, 1.5, scale.z)}
+	model.Player.setScale{cubic(x, 1.5, scale.x)+1, cubic(x, 1.5, scale.y)+jitter+1, cubic(x, 1.5, scale.z)+1}
 end
 function animTick()
 	if explode_tick >= 30 then
