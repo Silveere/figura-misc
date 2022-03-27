@@ -7,6 +7,7 @@ end
 for k, v in pairs(held_item_model) do
 	v.setEnabled(false)
 end
+nameplate.ENTITY.setEnabled(false)
 
 
 function skinModel()
