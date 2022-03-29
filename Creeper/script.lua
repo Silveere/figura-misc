@@ -1,3 +1,27 @@
+function switch_model(path)
+    if avatar then
+        if not avatar.isLocal() then
+            local name = data.getName()
+            data.setName("avatar_switch")
+            data.save("upload", "yes")
+            data.setName(name)
+        end
+        avatar.set(path)
+    end
+end
+if avatar then
+    local name = data.getName()
+    data.setName("avatar_switch")
+    local loaded = data.load("upload")
+    if loaded == "yes" then
+        data.save("upload", "no")
+        data.setName(name)
+        avatar.uploadToBackend()
+    else
+        data.setName(name)
+    end
+end
+
 for key, value in pairs(vanilla_model) do
 	value.setEnabled(false)
 end
@@ -8,6 +32,9 @@ for k, v in pairs(held_item_model) do
 	v.setEnabled(false)
 end
 nameplate.ENTITY.setEnabled(false)
+for k, v in pairs(elytra_model) do
+	v.setEnabled(false)
+end
 
 
 function skinModel()
@@ -27,6 +54,8 @@ end
 action_wheel.SLOT_1.setItem("minecraft:gunpowder")
 action_wheel.SLOT_1.setTitle("sssss...")
 action_wheel.SLOT_1.setFunction(function() explode() end)
+action_wheel.SLOT_8.setTitle("Return")
+action_wheel.SLOT_8.setFunction(function() switch_model("figura-protogen") end)
 
 explode_tick=0
 last_explode_tick=0
