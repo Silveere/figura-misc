@@ -295,8 +295,18 @@ function syncState()
 	ping.syncState(setLocalState())
 end
 
-function pmRefresh()
-	rateLimit(1, PartsManager.refreshAll, "refreshAll")
+do
+	local pm_refresh=false
+	function pmRefresh()
+		pm_refresh=true
+	end
+
+	function doPmRefresh()
+		if pm_refresh then
+			PartsManager.refreshAll()
+			pm_refresh=false
+		end
+	end
 end
 
 function ping.syncState(tbl)
@@ -538,4 +548,8 @@ end
 
 function player_init()
 	pmRefresh()
+end
+
+function tick()
+	doPmRefresh()
 end
